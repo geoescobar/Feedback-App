@@ -9,6 +9,11 @@
       "id": "2",
       "rating": "7",
       "text": "backend test for seeded data"
+    },
+    {
+      "text": "this is a new post ",
+      "rating": 8,
+      "id": "QtS76qN"
     }
   ]
 }
