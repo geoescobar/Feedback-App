@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const FeedbackContext = createContext();
 
@@ -17,11 +18,10 @@ export const FeedbackProvider = ({ children }) => {
   // Fetch feedback
   const fetchFeedback = async () => {
     try {
-      const response = await fetch(`/feedback?_sort=id&_order=desc`);
+      const response = await axios.get(`/feedback?_sort=id&_order=desc`);
       console.log(response);
-      const data = await response.json();
 
-      setFeedback(data);
+      setFeedback(response.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
