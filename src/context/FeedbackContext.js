@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import axios from "axios";
 
 const FeedbackContext = createContext();
 
@@ -18,10 +17,17 @@ export const FeedbackProvider = ({ children }) => {
   // Fetch feedback
   const fetchFeedback = async () => {
     try {
-      const response = await axios.get(`/feedback?_sort=id&_order=desc`);
+      const response = await fetch(
+        `http://localhost:5000/feedback?_sort=id&_order=desc`,
+        {
+          method: "GET",
+          mode: "no-cors",
+        }
+      );
       console.log(response);
+      const data = await response.json();
 
-      setFeedback(response.data);
+      setFeedback(data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -30,7 +36,7 @@ export const FeedbackProvider = ({ children }) => {
 
   // Add feedback
   const addFeedback = async (newFeedback) => {
-    const response = await fetch("/feedback", {
+    const response = await fetch("http://localhost:5000/feedback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +52,7 @@ export const FeedbackProvider = ({ children }) => {
   // Delete feedback
   const deleteFeedback = async (id) => {
     if (window.confirm("Are you sure you want to delete?")) {
-      await fetch(`/feedback/${id}`, { method: "DELETE" });
+      await fetch(`http://localhost:5000/feedback/${id}`, { method: "DELETE" });
 
       setFeedback(feedback.filter((item) => item.id !== id));
     }
@@ -54,7 +60,7 @@ export const FeedbackProvider = ({ children }) => {
 
   // Update feedback item
   const updateFeedback = async (id, updItem) => {
-    const response = await fetch(`/feedback/${id}`, {
+    const response = await fetch(`http://localhost:5000/feedback/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
